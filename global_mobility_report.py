@@ -41,6 +41,11 @@ class GlobalMobilityReport:
         stdf = self.df.loc[self.df[self.COUNTRY_REGION_CODE]==country]
         print(pd.unique(stdf[self.SUB_REGION_1]))
 
+    def getCityList(self,country,state):
+        stdf = self.df.loc[(self.df[self.COUNTRY_REGION_CODE]==country) & (self.df[self.SUB_REGION_1]==state)]
+        print(pd.unique(stdf[self.SUB_REGION_2]))
+
+
     def displayChart(self, country, state, city, data_needed, startdate, enddate, chart_type):
         self.fromdate = self.datetoms(startdate)
         self.todate = self.datetoms(enddate)
