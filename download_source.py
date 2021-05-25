@@ -12,3 +12,5 @@ class SourceDownlaod:
                     if chunk:  # filter out keep-alive new chunks
                         f.write(chunk)
                         pbar.update(len(chunk))
+
+SourceDownlaod().downloadsourcefile()
