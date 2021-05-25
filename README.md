@@ -1,5 +1,5 @@
 This Global mobile report is generated from data given by google.
-Download source data from https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv
+Download source data by downloadsourcefile method in download_source.py
 
 Get chart by calling the following method in GlobalMobilityReport class
 
