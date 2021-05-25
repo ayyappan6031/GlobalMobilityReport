@@ -1,6 +1,5 @@
 from datetime import datetime
 import pandas as pd
-from availabledata import AvailableData
 import matplotlib.pyplot as plt
 
 
@@ -15,56 +14,53 @@ class GlobalMobilityReport:
     PLACE_ID = 'place_id'
     DATE = 'date'
 
-
     SOURCE_FILE_NAME = 'Global_Mobility_Report.csv'
     collisst = []
 
     fromdate = 0.0
     todate = 0.0
 
-    chartType= 'line'
-
     LINE = 0
     BAR = 2
 
-    def datetoms(self,x):
+    def __init__(self):
+        self.df = pd.read_csv(self.SOURCE_FILE_NAME, dtype='unicode')
+
+    def datetoms(self, x):
         return datetime.strptime(x, "%Y-%m-%d").timestamp()
 
-    def setChartType(self,charttype):
+    def setChartType(self, charttype):
         self.chartType = charttype
 
+    def getCountryCode(self):
+        rgcode = pd.unique(self.df[self.COUNTRY_REGION_CODE])
+        rgname = pd.unique(self.df[self.COUNTRY_REGION])
+        for index, w in enumerate(rgcode):
+            print(rgname[index], '--', rgcode[index])
+    def getStatesList(self,country):
+        stdf = self.df.loc[self.df[self.COUNTRY_REGION_CODE]==country]
+        print(pd.unique(stdf[self.SUB_REGION_1]))
+
     def displayChart(self, country, state, city, data_needed, startdate, enddate, chart_type):
-        self.collisst.append(self.COUNTRY_REGION)
-        self.collisst.append(self.SUB_REGION_1)
-        self.collisst.append(self.SUB_REGION_2)
-        self.collisst.append(self.DATE)
-        self.collisst.append(data_needed)
         self.fromdate = self.datetoms(startdate)
         self.todate = self.datetoms(enddate)
-        df = pd.read_csv(self.SOURCE_FILE_NAME, usecols=self.collisst, dtype='unicode')
-        newdf = df.loc[(df[self.COUNTRY_REGION] == country) & (df[self.SUB_REGION_1]== state)& (df[self.SUB_REGION_2]==city)]
-        newdf[self.DATE] = newdf[self.DATE].apply(lambda x: datetime.strptime(x,"%Y-%m-%d").timestamp())
-        newdf = newdf.loc[(newdf[self.DATE]>self.fromdate) & (newdf[self.DATE]<self.todate)]
+        newdf = self.df.loc[(self.df[self.COUNTRY_REGION_CODE] == country) & (self.df[self.SUB_REGION_1] == state) & (
+                self.df[self.SUB_REGION_2] == city)]
+        newdf[self.DATE] = newdf[self.DATE].apply(lambda x: datetime.strptime(x, "%Y-%m-%d").timestamp())
+        newdf = newdf.loc[(newdf[self.DATE] > self.fromdate) & (newdf[self.DATE] < self.todate)]
         newdf[self.DATE] = newdf[self.DATE].apply(lambda x: datetime.fromtimestamp(x))
-        xAxisv = newdf.loc[:,self.DATE]
-        yAxisv = newdf.loc[:,data_needed].values
+        xAxisv = newdf.loc[:, self.DATE]
+        yAxisv = newdf.loc[:, data_needed].values
         yAxisv = yAxisv.astype(float)
-        self.showChart(xAxisv,yAxisv,chart_type)
+        self.showChart(xAxisv, yAxisv, data_needed, chart_type)
 
-    def showChart(self,xaxix,yaxis,chattype):
-        plt.title("work place movement data")
+
+    def showChart(self, xaxix, yaxis, datas, chattype):
+        plt.title(datas)
         plt.xlabel("Date")
-        plt.ylabel("work place movement")
-        if(chattype==self.LINE):
-            plt.bar(xaxix,yaxis)
+        plt.ylabel(datas)
+        if chattype == self.LINE:
+            plt.bar(xaxix, yaxis)
         else:
-            plt.bar(xaxix,yaxis)
+            plt.bar(xaxix, yaxis)
         plt.show()
-
-
-
-
-
-
-
-
