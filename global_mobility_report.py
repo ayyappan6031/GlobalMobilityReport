@@ -1,6 +1,7 @@
 from datetime import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
+from download_source import SourceDownlaod
 
 
 class GlobalMobilityReport:
@@ -24,6 +25,7 @@ class GlobalMobilityReport:
     BAR = 2
 
     def __init__(self):
+        SourceDownlaod().downloadsourcefile()
         self.df = pd.read_csv(self.SOURCE_FILE_NAME, dtype='unicode')
 
     def datetoms(self, x):
