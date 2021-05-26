@@ -1,5 +1,5 @@
 This Global mobile report is generated from data given by google.
-Download source data by downloadsourcefile method in download_source.py
+It will be auto downloaded if the source file is not exists when creating the GlobalMobilityReport object creation
 
 Get chart by calling the following method in GlobalMobilityReport class
 
